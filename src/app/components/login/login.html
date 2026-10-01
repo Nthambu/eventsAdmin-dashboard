@@ -1,0 +1,68 @@
+<div class="d-flex align-items-center justify-content-center" style="background: #f8fafc">
+  <div
+    class="card"
+    style="
+      background-color: #ffffff;
+      width: 360px;
+      height: 353px;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      padding: 32px;
+    "
+  >
+    <div style="text-align: center">
+      <img alt="lock" src="/lock.png" style="width: 60px; height: 60px; object-fit: contain" />
+    </div>
+    <div style="margin-bottom: 24px; text-align: center">
+      <div class="" style="font-size: 17px; font-weight: 500; margin-bottom: 4px">Admin login</div>
+      <div style="font-family: 13px; color: #64748b">EventHub dashboard</div>
+    </div>
+    <form [formGroup]="signInForm">
+      <div class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="password" class="form-label" style="font-size: 12px; color: #64748b"
+          >Admin password</label
+        >
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Enter your admin password"
+          id="password"
+        />
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-primary justify-content-center align-items-center"
+        style="
+          background: #1a56db;
+          padding: 10px;
+          width: 100%;
+          height: 32px;
+          font-size: 13px;
+          font-weight: 500;
+          align-items: center;
+          transition: all 0.15s;
+          gap: 6px;
+          display: inline-flex;
+        "
+      >
+        Sign in<i class="bi bi-arrow-right pt-1"></i>
+      </button>
+    </form>
+    <div
+      class=""
+      style="
+        margin-top: 16px;
+        padding-top: 15px;
+        border-top: 0.5px solid #e2e8f0;
+        font-size: 11px;
+        text-align: center;
+        color: #94a3b8;
+      "
+    >
+      Protected by JWT. Session expires in 7 days
+    </div>
+  </div>
+</div>

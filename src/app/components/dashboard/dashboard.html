@@ -1,0 +1,70 @@
+<div class="nav">
+  <div class="nav-logo">
+    <img
+      alt="ticket-icon"
+      src="/events.png"
+      style="width: 50px; height: 50px; object-fit: contain"
+    />EventHub
+  </div>
+  <div style="display: flex; gap: 16px">
+    <a href="" class="nav-link"
+      >View site<i class="bi bi-arrow-up-right ps-2" style="font-size: 10px"></i
+    ></a>
+    <div class="avatar-circle">JD</div>
+  </div>
+</div>
+<div class="admin-layout">
+  <div class="sidebar">
+    <div class="sidebar-title">Admin Panel</div>
+    <button class="slink" [ngClass]="activateDashboard ? 'active' : ''" (click)="goTo('dashboard')">
+      Dashboard
+    </button>
+    <button class="slink" [ngClass]="activeEvents ? 'active' : ''" (click)="goTo('events')">
+      Events
+    </button>
+    <button class="slink" [ngClass]="activateOrders ? 'active' : ''" (click)="goTo('orders')">
+      Orders
+    </button>
+  </div>
+  <div class="main">
+    <div class="page-header">
+      <div>
+        <div clas="page-title">Dashboard</div>
+        <div style="font-size: 12px; color: #64748b; margin-top: 2px">
+          Welcome back — here's what's happening> Welcome back - here's what's is happening
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary btn-sm">
+        <i class="bi bi-plus"></i>New Event
+      </button>
+    </div>
+    <div class="cards">
+      <div class="card stat-card">
+        <div class="stat-icon" style="background-color: #eef3ff"></div>
+        <div class="stat-val">KES 4300</div>
+        <div class="stat-lbl">Total revenue</div>
+        <div class="stat-trend"><i class="bi bi-arrow-up"></i> 12% this month</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background-color: #dcfce7"></div>
+        <div class="stat-val">128</div>
+        <div class="stat-lbl">Tickets sold</div>
+        <div class="stat-trend"><i class="bi bi-arrow-up"></i> 8 this week</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background-color: #f0fdf4">
+          <i class="bi bi-check-square-fill"></i>
+        </div>
+        <div class="stat-val">47</div>
+        <div class="stat-lbl">Paid orders</div>
+        <div class="stat-trend" style="color: #94a3b8">3 pending</div>
+      </div>
+      <div class="card stat-card">
+        <div class="stat-icon" style="background-color: #fef9c3"></div>
+        <div class="stat-val">3</div>
+        <div class="stat-lbl">Active events</div>
+        <div class="stat-trend" style="color: #94a3b8">1 inactive</div>
+      </div>
+    </div>
+  </div>
+</div>
