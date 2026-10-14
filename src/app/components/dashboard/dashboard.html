@@ -1,12 +1,18 @@
 <div class="nav">
-  <div class="nav-logo">
-    <img
-      alt="ticket-icon"
-      src="/events.png"
-      style="width: 50px; height: 50px; object-fit: contain"
-    />EventHub
+  <div style="display: flex; align-items: center; gap: 12px">
+    <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" aria-label="Toggle menu">
+      <i class="pi pi-bars"></i>
+    </button>
+    <div class="nav-logo">
+      <img
+        alt="ticket-icon"
+        src="/events.png"
+        style="width: 50px; height: 50px; object-fit: contain"
+      />
+      <span>EventHub</span>
+    </div>
   </div>
-  <div style="display: flex; gap: 16px">
+  <div style="display: flex; gap: 12px; align-items: center">
     <a href="" class="nav-link"
       >View site<i class="bi bi-arrow-up-right ps-2" style="font-size: 10px"></i
     ></a>
@@ -14,28 +20,67 @@
   </div>
 </div>
 <div class="admin-layout">
-  <div class="sidebar">
-    <div class="sidebar-title">Admin Panel</div>
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+  <div class="sidebar" [class.show]="isMobileMenuOpen">
+    <div
+      class="sidebar-header"
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 8px;
+      "
+    >
+      <div class="sidebar-title" style="padding: 0; margin: 0">Admin Panel</div>
+      <button
+        class="close-mobile-menu"
+        (click)="closeMobileMenu()"
+        style="
+          display: none;
+          background: none;
+          border: none;
+          color: #94a3b8;
+          font-size: 18px;
+          cursor: pointer;
+          padding: 4px;
+        "
+      >
+        <i class="bi bi-times"></i>
+      </button>
+    </div>
     <button class="slink" [ngClass]="activateDashboard ? 'active' : ''" (click)="goTo('dashboard')">
-      Dashboard
+      <i class="pi pi-th-large"></i> Dashboard
     </button>
     <button class="slink" [ngClass]="activeEvents ? 'active' : ''" (click)="goTo('events')">
-      Events
+      <i class="pi pi-calendar"></i> Events
     </button>
     <button class="slink" [ngClass]="activateOrders ? 'active' : ''" (click)="goTo('orders')">
-      Orders
+      <i class="pi pi-shopping-cart"></i> Orders
     </button>
+    <div class="margin-top:auto;adding:8px 4px">
+      <button
+        class="slink logout"
+        [ngClass]="activateLogout ? 'active' : ''"
+        (click)="goTo('logout')"
+      >
+        <i class="bi bi-box-arrow-in-left"></i> Logout
+      </button>
+    </div>
   </div>
   <div class="main">
     <div class="page-header">
       <div>
-        <div clas="page-title">Dashboard</div>
+        <div class="page-title">Dashboard</div>
         <div style="font-size: 12px; color: #64748b; margin-top: 2px">
-          Welcome back — here's what's happening> Welcome back - here's what's is happening
+          Welcome back — here's what's happening
         </div>
       </div>
       <button type="button" class="btn btn-primary btn-sm">
-        <i class="bi bi-plus"></i>New Event
+        <i class="pi pi-plus"></i> New Event
       </button>
     </div>
     <div class="cards">
@@ -64,6 +109,52 @@
         <div class="stat-val">3</div>
         <div class="stat-lbl">Active events</div>
         <div class="stat-trend" style="color: #94a3b8">1 inactive</div>
+      </div>
+    </div>
+    <div class="d-flex gap-3">
+      <div class="section-card" style="width: 800px">
+        <div class="section-head">
+          <div class="section-head-title">Recent order</div>
+
+          <button
+            type="button"
+            class="btn btn-outline btn-sm"
+            style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
+            (click)="goTo('orders')"
+          >
+            View all
+          </button>
+        </div>
+      </div>
+      <div class="section-card" style="width: 330px">
+        <div class="section-head">
+          <div class="section-head-title">Your events</div>
+          <button
+            type="button"
+            class="btn btn-outline btn-sm"
+            style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
+            (click)="goTo('events')"
+          >
+            Manage
+          </button>
+        </div>
+      </div>
+      <div style="padding: 8px">
+        <div class="d-flex flex-column" style="gap: 2px">
+          <div
+            style="
+              padding: 10px;
+              border-radius: var(--radius);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              cursor: pointer;
+              transition: background 0.1s;
+            "
+            onmouseover="this.style.background = 'var(--surface-1)'"
+            onmouseout="this.style.background = ''"
+          ></div>
+        </div>
       </div>
     </div>
   </div>

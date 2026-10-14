@@ -1,0 +1,10 @@
+
+.login-screen {
+  background: #f8fafc;
+}
+
+@media screen and (min-width: 768px) {
+  .login-screen {
+    min-height: 100vh;
+  }
+}
