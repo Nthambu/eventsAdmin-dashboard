@@ -4,11 +4,7 @@
       <i class="pi pi-bars"></i>
     </button>
     <div class="nav-logo">
-      <img
-        alt="ticket-icon"
-        src="/events.png"
-        style="width: 50px; height: 50px; object-fit: contain"
-      />
+      &#x1F39F;&#xFE0F;
       <span>EventHub</span>
     </div>
   </div>
@@ -52,6 +48,8 @@
         <i class="bi bi-times"></i>
       </button>
     </div>
+    <div class="">
+      <div>
     <button class="slink" [ngClass]="activateDashboard ? 'active' : ''" (click)="goTo('dashboard')">
       <i class="pi pi-th-large"></i> Dashboard
     </button>
@@ -61,7 +59,8 @@
     <button class="slink" [ngClass]="activateOrders ? 'active' : ''" (click)="goTo('orders')">
       <i class="pi pi-shopping-cart"></i> Orders
     </button>
-    <div class="margin-top:auto;adding:8px 4px">
+    </div>
+    <div class="logout-btn" >
       <button
         class="slink logout"
         [ngClass]="activateLogout ? 'active' : ''"
@@ -69,6 +68,7 @@
       >
         <i class="bi bi-box-arrow-in-left"></i> Logout
       </button>
+    </div>
     </div>
   </div>
   <div class="main">
@@ -85,77 +85,87 @@
     </div>
     <div class="cards">
       <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #eef3ff"></div>
+        <div class="stat-icon" style="background-color: #eef3ff">&#x1F4B0;</div>
         <div class="stat-val">KES 4300</div>
         <div class="stat-lbl">Total revenue</div>
         <div class="stat-trend"><i class="bi bi-arrow-up"></i> 12% this month</div>
       </div>
       <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #dcfce7"></div>
+        <div class="stat-icon" style="background-color: #dcfce7">&#x1F39F;&#xFE0F;</div>
         <div class="stat-val">128</div>
         <div class="stat-lbl">Tickets sold</div>
         <div class="stat-trend"><i class="bi bi-arrow-up"></i> 8 this week</div>
       </div>
       <div class="card stat-card">
         <div class="stat-icon" style="background-color: #f0fdf4">
-          <i class="bi bi-check-square-fill"></i>
+     &#x2705;
         </div>
         <div class="stat-val">47</div>
         <div class="stat-lbl">Paid orders</div>
         <div class="stat-trend" style="color: #94a3b8">3 pending</div>
       </div>
       <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #fef9c3"></div>
+        <div class="stat-icon" style="background-color: #fef9c3">&#x1F4C5;</div>
         <div class="stat-val">3</div>
         <div class="stat-lbl">Active events</div>
         <div class="stat-trend" style="color: #94a3b8">1 inactive</div>
       </div>
     </div>
-    <div class="d-flex gap-3">
-      <div class="section-card" style="width: 800px">
-        <div class="section-head">
-          <div class="section-head-title">Recent order</div>
-
-          <button
-            type="button"
-            class="btn btn-outline btn-sm"
-            style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
-            (click)="goTo('orders')"
-          >
-            View all
-          </button>
-        </div>
-      </div>
-      <div class="section-card" style="width: 330px">
-        <div class="section-head">
-          <div class="section-head-title">Your events</div>
-          <button
-            type="button"
-            class="btn btn-outline btn-sm"
-            style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
-            (click)="goTo('events')"
-          >
-            Manage
-          </button>
-        </div>
-      </div>
-      <div style="padding: 8px">
-        <div class="d-flex flex-column" style="gap: 2px">
-          <div
-            style="
-              padding: 10px;
-              border-radius: var(--radius);
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              cursor: pointer;
-              transition: background 0.1s;
-            "
-            onmouseover="this.style.background = 'var(--surface-1)'"
-            onmouseout="this.style.background = ''"
-          ></div>
-        </div>
-      </div>
+<div class="row g-3"> 
+  
+  <!-- Column 1: Main content area-->
+  <div class="col-12  col-lg-8">
+      <div class="section-card h-100">
+    <div class="section-head">
+      <div class="section-head-title">Recent order</div>
+      <button
+        type="button"
+        class="btn btn-outline btn-sm"
+        style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
+        (click)="goTo('orders')"
+      >
+        View all
+      </button>
+    </div>
     </div>
   </div>
+
+  <!-- Column 2 -->
+  <div class="col-12 col-lg-4">
+    <div class="section-card h-100">
+    <div class="section-head">
+      <div class="section-head-title">Your events</div>
+      <button
+        type="button"
+        class="btn btn-outline btn-sm"
+        style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
+        (click)="goTo('events')"
+      >
+        Manage<i class="pi pi-arrow-right"></i>
+      </button>
+    </div>
+    <!-- event list -->
+     <div class="d-flex align-items-center justify-content-between list-div" style="padding:10px;border-radius: 8px;cursor:pointer;transition: background 0.1s;" >
+      
+      <div class="d-block">
+<div class="" style="font-size:12px;font-weight:500">Summer rooftop party</div>
+<div class="text-secondary" style="font-size:11px;">august</div>
+      </div>
+        <div class="" style="padding: 3px 10px;
+  
+    border-radius: 50% !important;
+    font-size: 11px;
+    font-weight: 500;
+        display: inline-flex;
+    align-items: center;">
+          <span class="tag-green">Active</span>
+      </div>
+     </div>
+  </div>
+
 </div>
+</div> 
+
+    </div>
+ 
+

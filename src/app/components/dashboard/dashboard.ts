@@ -20,17 +20,9 @@ newO=[{name:'',id:3},{name:'',id:3}];
   constructor() {}
 
   ngOnInit() {
-    console.log(typeof undefined);
-    console.log('tuple cars',this.cars[1]);
-console.log(typeof this.school)
-    console.log(this.newO[0])
+
   }
- testVariables(id:string):number{
-  let total=40;
-  total=+id;
-  console.log(total);
-  return total;
-}
+
   goTo(buttonType: string): void {
     // Close mobile menu when navigating
     this.isMobileMenuOpen = false;
