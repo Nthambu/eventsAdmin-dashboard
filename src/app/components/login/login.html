@@ -22,8 +22,21 @@
     </div>
     <form [formGroup]="signInForm">
       <div class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="email" class="form-label" style="font-size: 12px; color: #64748b"
+          >Email</label
+        >
+        <input
+          type="text"
+          formControlName="email"
+          class="form-control"
+          placeholder="Enter your admin email"
+          id="email"
+        />
+      </div>
+      <!-- @if(!isOtpRequired){ -->
+      <div *ngIf="!isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
         <label for="password" class="form-label" style="font-size: 12px; color: #64748b"
-          >Admin password</label
+          >Password</label
         >
         <input
           type="password"
@@ -33,7 +46,21 @@
           id="password"
         />
       </div>
-
+    <!-- } -->
+      <!-- @if(isOtpRequired){ -->
+  <div *ngIf="isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="otp" class="form-label" style="font-size: 12px; color: #64748b"
+          >Otp Code</label
+        >
+        <input
+          type="text"
+          formControlName="otp"
+          class="form-control"
+          placeholder="One time password"
+          id="otp"
+        />
+      </div>
+    <!-- } -->
       <button
         type="button"
         class="btn btn-primary justify-content-center align-items-center"
@@ -49,8 +76,9 @@
           gap: 6px;
           display: inline-flex;
         "
+        (click)="onLogin()"
       >
-        Sign in<i class="bi bi-arrow-right pt-1"></i>
+        Submit<i class="bi bi-arrow-right pt-1"></i>
       </button>
     </form>
     <div
@@ -64,7 +92,7 @@
         color: #94a3b8;
       "
     >
-      Protected by JWT. Session expires in 7 days
+      Protected by JWT. Session expires in 1 day
     </div>
   </div>
 </div>

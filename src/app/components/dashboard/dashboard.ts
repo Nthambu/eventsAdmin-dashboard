@@ -1,13 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { NgClass } from '@angular/common';
+import { NgClass, DatePipe, NgIf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-
+import { EventsService } from '../../services/events-service';
+import { EventDto } from '../../data/eventsDTO.dto';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule,  ReactiveFormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Route } from '@angular/router';
+interface TicketTier {
+  name: string;
+  price: number | null;
+  available: number | null;
+}
 @Component({
   selector: 'app-dashboard',
-  imports: [NgClass, ButtonModule],
+  imports: [NgClass, ButtonModule, DatePipe, DialogModule, ReactiveFormsModule, FormsModule, NgIf],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
+
 export class Dashboard implements OnInit {
   activateDashboard: boolean = true;
   activeEvents: boolean = false;
@@ -15,12 +26,36 @@ export class Dashboard implements OnInit {
   activateLogout:boolean=false;
   isMobileMenuOpen: boolean = false;
 cars:[string,number,boolean]=['bmw',3,true];
-school={cars:"bmw",id:3};
+readonly school={cars:"bmw",id:3};
 newO=[{name:'',id:3},{name:'',id:3}];
-  constructor() {}
+events:EventDto[]=[]
+ newEvent = {
+    name: '',
+    description: '',
+    event_date: '',
+    venue: '',
+    city: '',
+    status: 'active',
+     facebook_url: '',
+     image_url: '',
+    tickets: [
+      { name: 'General Admission', price: 2500, available: 200 }
+    ] as TicketTier[]
+  };
+
+loading:boolean=true;
+ // Dialog visibility state
+  isCreateModalOpen = false;
+  showExpiredMessage = false;
+  constructor(private readonly eventsService:EventsService,private readonly toastService:ToastrService,private route:ActivatedRoute) {}
 
   ngOnInit() {
-
+     this.route.queryParams.subscribe(params => {
+      if (params['sessionExpired']) {
+        this.showExpiredMessage = true;
+      }
+    });
+this.fetchEvents();
   }
 
   goTo(buttonType: string): void {
@@ -60,5 +95,53 @@ newO=[{name:'',id:3},{name:'',id:3}];
 
   closeMobileMenu(): void {
     this.isMobileMenuOpen = false;
+  }
+  fetchEvents():void{
+    this.loading=true;
+    this.eventsService.getEvents().subscribe({
+      next:(res)=>{
+this.events=res;
+this.toastService.success('','success');
+this.loading=false;
+      },
+      error:(err)=>{
+        this.loading=false;
+        this.toastService.error('',err.error?.message)
+      }
+    })
+  }
+   openCreateModal() {
+    this.isCreateModalOpen = true;
+  }
+   closeCreateModal() {
+    this.isCreateModalOpen = false;
+  }
+
+  // Ticket Tiers management
+  addTicketTier() {
+    this.newEvent.tickets.push({
+      name: '',
+      price: null,
+      available: null
+    });
+  }
+
+  removeTicketTier(index: number) {
+    if (this.newEvent.tickets.length > 1) {
+      this.newEvent.tickets.splice(index, 1);
+    }
+  }
+
+  saveEvent() {
+    this.eventsService.createEvent(this.newEvent).subscribe({
+      next:(res)=>{
+console.log('response',res);
+this.fetchEvents();
+      },
+      error:(err)=>{
+        console.log('errors',err.error?.message);
+      }
+    });
+    this.closeCreateModal();
   }
 }

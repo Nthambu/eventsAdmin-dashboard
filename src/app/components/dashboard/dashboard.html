@@ -1,4 +1,4 @@
-<div class="nav">
+<div *ngIf="!showExpiredMessage" class="nav">
   <div style="display: flex; align-items: center; gap: 12px">
     <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" aria-label="Toggle menu">
       <i class="pi pi-bars"></i>
@@ -79,7 +79,7 @@
           Welcome back — here's what's happening
         </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm">
+      <button type="button" class="btn btn-primary btn-sm" (click)="openCreateModal()">
         <i class="pi pi-plus"></i> New Event
       </button>
     </div>
@@ -144,28 +144,219 @@
         Manage<i class="pi pi-arrow-right"></i>
       </button>
     </div>
-    <!-- event list -->
-     <div class="d-flex align-items-center justify-content-between list-div" style="padding:10px;border-radius: 8px;cursor:pointer;transition: background 0.1s;" >
-      
-      <div class="d-block">
-<div class="" style="font-size:12px;font-weight:500">Summer rooftop party</div>
-<div class="text-secondary" style="font-size:11px;">august</div>
-      </div>
-        <div class="" style="padding: 3px 10px;
-  
-    border-radius: 50% !important;
-    font-size: 11px;
-    font-weight: 500;
-        display: inline-flex;
-    align-items: center;">
-          <span class="tag-green">Active</span>
-      </div>
-     </div>
-  </div>
+            <!-- Event list -->
+    <div class="event-list">
+        @if (events?.length) {
+       @for (event of events; track event.id) {
+        <div class="event-item">
 
+          <!-- Event details -->
+          <div class="event-details">
+            <div class="event-name">{{ event.name }}</div>
+
+            <div class="event-date text-secondary">
+              {{ event.event_date | date: 'mediumDate'  }}
+            </div>
+          </div>
+
+          <!-- Event status -->
+          <span
+            class="tag-green"
+            [class.tag-inactive]="!event.active"
+          >
+            {{ event.active ? 'Active' : 'Inactive' }}
+          </span>
+
+        </div>
+      }
+    }@else {
+        <div  class="empty-state">
+      <i class="pi pi-calendar"></i>
+      <p>No events available.</p>
+      </div>
+    }
+    </div>
 </div>
 </div> 
 
     </div>
  
 
+<!-- ================= PrimeNG Create Event Dialog ================= -->
+<p-dialog
+  [(visible)]="isCreateModalOpen"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  styleClass="create-event-dialog"
+  [style]="{ width: '95vw', maxWidth: '672px' }"
+  header="Create New Event"
+>
+  <!-- Form Body -->
+  <div class="event-form-body">
+    <!-- Event Name -->
+    <div class="form-field-group">
+      <label class="field-label">Event name *</label>
+      <input
+        type="text"
+        class="field-input"
+        placeholder="e.g. Summer Rooftop Party"
+        [(ngModel)]="newEvent.name"
+      />
+    </div>
+
+    <!-- Description -->
+    <div class="form-field-group">
+      <label class="field-label">Description</label>
+      <textarea
+        class="field-textarea"
+        rows="4"
+        placeholder="Describe your event..."
+        [(ngModel)]="newEvent.description"
+      ></textarea>
+    </div>
+
+    <!-- Date & Venue (Row) -->
+    <div class="field-grid-row">
+      <div class="form-field-group">
+        <label class="field-label">Date & Time *</label>
+        <input
+          type="datetime-local"
+          class="field-input"
+          [(ngModel)]="newEvent.event_date"
+        />
+      </div>
+      <div class="form-field-group">
+        <label class="field-label">Venue</label>
+        <input
+          type="text"
+          class="field-input"
+          placeholder="e.g. Skyline Lounge"
+          [(ngModel)]="newEvent.venue"
+        />
+      </div>
+    </div>
+
+    <!-- City & Status (Row) -->
+    <div class="field-grid-row">
+      <div class="form-field-group">
+        <label class="field-label">City</label>
+        <input
+          type="text"
+          class="field-input"
+          placeholder="e.g. Nairobi"
+          [(ngModel)]="newEvent.city"
+        />
+      </div>
+      <div class="form-field-group">
+        <label class="field-label">Status</label>
+        <div class="select-wrapper">
+          <select class="field-select" [(ngModel)]="newEvent.status">
+            <option value="active">Active — visible to public</option>
+            <option value="draft">Draft — hidden from public</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Facebook Event URL -->
+    <div class="form-field-group">
+      <label class="field-label">Facebook Event URL</label>
+      <input
+        type="url"
+        class="field-input"
+        placeholder="https://facebook.com/events/..."
+        [(ngModel)]="newEvent.facebook_url"
+      />
+    </div>
+
+    <!-- Cover Image URL -->
+    <div class="form-field-group">
+      <label class="field-label">Cover Image URL</label>
+      <input
+        type="url"
+        class="field-input"
+        placeholder="https://... (optional, leave blank for default)"
+        [(ngModel)]="newEvent.image_url"
+      />
+    </div>
+
+    <!-- Ticket Types Section -->
+    <div class="tickets-section">
+      <div class="tickets-header-row">
+        <label class="field-label mb-0">Ticket Types *</label>
+        <button type="button" class="btn-add-ticket" (click)="addTicketTier()">
+          + Add Type
+        </button>
+      </div>
+      <p class="tickets-instruction">
+        Add one or more ticket tiers with name, price in KES, and available quantity
+      </p>
+
+      <!-- Ticket Tier List -->
+      @for (tier of newEvent.tickets; track $index) {
+        <div class="ticket-card-box">
+          <div class="tier-field tier-name">
+            <label class="tier-label">Name</label>
+            <input
+              type="text"
+              class="field-input"
+              placeholder="General Admission"
+              [(ngModel)]="tier.name"
+            />
+          </div>
+
+          <div class="tier-field tier-price">
+            <label class="tier-label">Price (KES)</label>
+            <input
+              type="number"
+              class="field-input"
+              placeholder="2500"
+              [(ngModel)]="tier.price"
+            />
+          </div>
+
+          <div class="tier-field tier-available">
+            <label class="tier-label">Available</label>
+            <input
+              type="number"
+              class="field-input"
+              placeholder="200"
+              [(ngModel)]="tier.available"
+            />
+          </div>
+
+          <div class="tier-action">
+            <button
+              type="button"
+              class="btn-delete-tier"
+              (click)="removeTicketTier($index)"
+              [disabled]="newEvent.tickets.length === 1"
+              title="Delete ticket tier"
+            >
+              <i class="pi pi-trash" style="font-size: 13px;"></i>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- PrimeNG Dialog Footer -->
+  <ng-template #footer>
+    <div class="dialog-actions-footer">
+      <button type="button" class="btn-dialog-cancel" (click)="closeCreateModal()">
+        Cancel
+      </button>
+      <button type="button" class="btn-dialog-create" (click)="saveEvent()">
+        Create Event
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+ @if (showExpiredMessage) {
+      <div class="alert alert-warning">
+        Your 1-hour admin session has expired. Please log in again using your credentials and OTP.
+      </div>
+    }
