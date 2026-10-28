@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { NgClass, DatePipe, NgIf } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { EventsService } from '../../services/events-service';
 import { EventDto } from '../../data/eventsDTO.dto';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule,  ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import {CommonModule, DatePipe} from '@angular/common';
+
 interface TicketTier {
   name: string;
   price: number | null;
   available: number | null;
+  description:string;
 }
 @Component({
   selector: 'app-dashboard',
-  imports: [NgClass, ButtonModule, DatePipe, DialogModule, ReactiveFormsModule, FormsModule, NgIf],
+  imports: [CommonModule, ButtonModule, DatePipe, DialogModule, ReactiveFormsModule, FormsModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
@@ -35,11 +37,12 @@ events:EventDto[]=[]
     event_date: '',
     venue: '',
     city: '',
+state:'',
     status: 'active',
      facebook_url: '',
      image_url: '',
-    tickets: [
-      { name: 'General Admission', price: 2500, available: 200 }
+    ticket_types: [
+      { name: 'General Admission', price: 2500, available: 200,description:'Gen z connect' }
     ] as TicketTier[]
   };
 
@@ -119,16 +122,17 @@ this.loading=false;
 
   // Ticket Tiers management
   addTicketTier() {
-    this.newEvent.tickets.push({
+    this.newEvent.ticket_types.push({
       name: '',
       price: null,
-      available: null
+      available: null,
+      description:''
     });
   }
 
   removeTicketTier(index: number) {
-    if (this.newEvent.tickets.length > 1) {
-      this.newEvent.tickets.splice(index, 1);
+    if (this.newEvent.ticket_types.length > 1) {
+      this.newEvent.ticket_types.splice(index, 1);
     }
   }
 

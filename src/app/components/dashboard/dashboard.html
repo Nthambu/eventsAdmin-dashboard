@@ -146,7 +146,7 @@
     </div>
             <!-- Event list -->
     <div class="event-list">
-        @if (events?.length) {
+        @if (events.length) {
        @for (event of events; track event.id) {
         <div class="event-item">
 
@@ -238,7 +238,7 @@
       </div>
     </div>
 
-    <!-- City & Status (Row) -->
+    <!-- City & State (Row) -->
     <div class="field-grid-row">
       <div class="form-field-group">
         <label class="field-label">City</label>
@@ -250,13 +250,13 @@
         />
       </div>
       <div class="form-field-group">
-        <label class="field-label">Status</label>
-        <div class="select-wrapper">
-          <select class="field-select" [(ngModel)]="newEvent.status">
-            <option value="active">Active — visible to public</option>
-            <option value="draft">Draft — hidden from public</option>
-          </select>
-        </div>
+        <label class="field-label">Country</label>
+        <input
+          type="text"
+          class="field-input"
+          placeholder="e.g. USA"
+          [(ngModel)]="newEvent.state"
+        />
       </div>
     </div>
 
@@ -295,7 +295,7 @@
       </p>
 
       <!-- Ticket Tier List -->
-      @for (tier of newEvent.tickets; track $index) {
+      @for (tier of newEvent.ticket_types; track $index) {
         <div class="ticket-card-box">
           <div class="tier-field tier-name">
             <label class="tier-label">Name</label>
@@ -308,7 +308,7 @@
           </div>
 
           <div class="tier-field tier-price">
-            <label class="tier-label">Price (KES)</label>
+            <label class="tier-label">Price ($)</label>
             <input
               type="number"
               class="field-input"
@@ -326,13 +326,22 @@
               [(ngModel)]="tier.available"
             />
           </div>
+           <div class="tier-field tier-available">
+            <label class="tier-label">Description</label>
+            <input
+              type="number"
+              class="field-input"
+              placeholder="bikes day"
+              [(ngModel)]="tier.description"
+            />
+          </div>
 
           <div class="tier-action">
             <button
               type="button"
               class="btn-delete-tier"
               (click)="removeTicketTier($index)"
-              [disabled]="newEvent.tickets.length === 1"
+              [disabled]="newEvent.ticket_types.length === 1"
               title="Delete ticket tier"
             >
               <i class="pi pi-trash" style="font-size: 13px;"></i>
