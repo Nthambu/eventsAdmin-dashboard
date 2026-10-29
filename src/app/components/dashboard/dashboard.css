@@ -815,3 +815,98 @@ background-color: #f8fafc;
   background: #1e40af;
   border-color: #1e40af;
 }
+
+/* ================= Events Table ================= */
+.events-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.events-table th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+  background: #f8fafc;
+}
+
+.events-table td {
+  padding: 14px 16px;
+  border-bottom: 0.5px solid #f1f5f9;
+  vertical-align: middle;
+  color: #1e293b;
+}
+
+.events-table tr:last-child td {
+  border-bottom: none;
+}
+
+.events-table tr:hover td {
+  background: #f8fafc;
+}
+
+.event-table-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f172a;
+  margin-bottom: 3px;
+}
+
+.event-table-fb {
+  font-size: 11px;
+  color: #3b82f6;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.event-table-fb:hover {
+  text-decoration: underline;
+}
+
+/* Action buttons */
+.action-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.15s;
+}
+
+.action-btn:hover {
+  opacity: 0.8;
+}
+
+.action-edit {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.action-deactivate {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+.action-activate {
+  background: #dcfce7;
+  color: #15803d;
+  padding: 5px 10px;
+}
+
+.action-delete {
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 5px 8px;
+}

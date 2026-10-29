@@ -15,9 +15,9 @@ export interface EventDto {
 }
 
 export interface TicketTypeDto {
-  type: string;
+  name: string;
   price: number;
-  quantity: number;
+  available: number;
   description: string;
 }
 export interface UserLoginsDto{

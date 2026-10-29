@@ -1,436 +1,422 @@
+<!-- ===== NAV ===== -->
 <div *ngIf="!showExpiredMessage" class="nav">
   <div style="display: flex; align-items: center; gap: 12px">
     <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" aria-label="Toggle menu">
       <i class="pi pi-bars"></i>
     </button>
-    <div class="nav-logo">
-      &#x1F39F;&#xFE0F;
-      <span>EventHub</span>
-    </div>
+    <div class="nav-logo">&#x1F39F;&#xFE0F; <span>EventHub</span></div>
   </div>
   <div style="display: flex; gap: 12px; align-items: center">
-    <a href="" class="nav-link"
-      >View site<i class="bi bi-arrow-up-right ps-2" style="font-size: 10px"></i
-    ></a>
+    <a href="" class="nav-link">View site<i class="bi bi-arrow-up-right ps-2" style="font-size: 10px"></i></a>
     <div class="avatar-circle">JD</div>
   </div>
 </div>
+
 <div class="admin-layout">
-  <!-- Mobile sidebar overlay -->
+  <!-- Mobile overlay -->
   <div class="sidebar-overlay" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
 
+  <!-- ===== SIDEBAR ===== -->
   <div class="sidebar" [class.show]="isMobileMenuOpen">
-    <div
-      class="sidebar-header"
-      style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        margin-bottom: 8px;
-      "
-    >
-      <div class="sidebar-title" style="padding: 0; margin: 0">Admin Panel</div>
-      <button
-        class="close-mobile-menu"
-        (click)="closeMobileMenu()"
-        style="
-          display: none;
-          background: none;
-          border: none;
-          color: #94a3b8;
-          font-size: 18px;
-          cursor: pointer;
-          padding: 4px;
-        "
-      >
+    <div class="sidebar-header" style="display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:8px">
+      <div class="sidebar-title" style="padding:0;margin:0">Admin Panel</div>
+      <button class="close-mobile-menu" (click)="closeMobileMenu()" style="display:none;background:none;border:none;color:#94a3b8;font-size:18px;cursor:pointer;padding:4px">
         <i class="bi bi-times"></i>
       </button>
     </div>
-    <div class="">
-      <div>
-    <button class="slink" [ngClass]="activateDashboard ? 'active' : ''" (click)="goTo('dashboard')">
-      <i class="pi pi-th-large"></i> Dashboard
-    </button>
-    <button class="slink" [ngClass]="activeEvents ? 'active' : ''" (click)="goTo('events')">
-      <i class="pi pi-calendar"></i> Events
-    </button>
-    <button class="slink" [ngClass]="activateOrders ? 'active' : ''" (click)="goTo('orders')">
-      <i class="pi pi-shopping-cart"></i> Orders
-    </button>
+    <div>
+      <button class="slink" [ngClass]="activateDashboard ? 'active' : ''" (click)="goTo('dashboard')">
+        <i class="pi pi-th-large"></i> Dashboard
+      </button>
+      <button class="slink" [ngClass]="activeEvents ? 'active' : ''" (click)="goTo('events')">
+        <i class="pi pi-calendar"></i> Events
+      </button>
+      <button class="slink" [ngClass]="activateOrders ? 'active' : ''" (click)="goTo('orders')">
+        <i class="pi pi-shopping-cart"></i> Orders
+      </button>
     </div>
-    <div class="logout-btn" >
-      <button
-        class="slink logout"
-        [ngClass]="activateLogout ? 'active' : ''"
-        (click)="goTo('logout')"
-      >
+    <div class="logout-btn">
+      <button class="slink logout" [ngClass]="activateLogout ? 'active' : ''" (click)="goTo('logout')">
         <i class="bi bi-box-arrow-in-left"></i> Logout
       </button>
     </div>
-    </div>
   </div>
+
+  <!-- ===== MAIN ===== -->
   <div class="main">
-    <div class="page-header">
-      <div>
-        <div class="page-title">Dashboard</div>
-        <div style="font-size: 12px; color: #64748b; margin-top: 2px">
-          Welcome back — here's what's happening
+
+    <!-- ── DASHBOARD VIEW ── -->
+    @if (activateDashboard) {
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div style="font-size:12px;color:#64748b;margin-top:2px">Welcome back — here's what's happening</div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" (click)="openCreateModal()">
+          <i class="pi pi-plus"></i> New Event
+        </button>
+      </div>
+
+      <div class="cards">
+        <div class="card stat-card">
+          <div class="stat-icon" style="background-color:#eef3ff">&#x1F4B0;</div>
+          <div class="stat-val">KES 4300</div>
+          <div class="stat-lbl">Total revenue</div>
+          <div class="stat-trend"><i class="bi bi-arrow-up"></i> 12% this month</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background-color:#dcfce7">&#x1F39F;&#xFE0F;</div>
+          <div class="stat-val">128</div>
+          <div class="stat-lbl">Tickets sold</div>
+          <div class="stat-trend"><i class="bi bi-arrow-up"></i> 8 this week</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background-color:#f0fdf4">&#x2705;</div>
+          <div class="stat-val">47</div>
+          <div class="stat-lbl">Paid orders</div>
+          <div class="stat-trend" style="color:#94a3b8">3 pending</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-icon" style="background-color:#fef9c3">&#x1F4C5;</div>
+          <div class="stat-val">{{ events.length }}</div>
+          <div class="stat-lbl">Total events</div>
+          <div class="stat-trend" style="color:#94a3b8">{{ activeEventsCount }} active</div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary btn-sm" (click)="openCreateModal()">
-        <i class="pi pi-plus"></i> New Event
-      </button>
-    </div>
-    <div class="cards">
-      <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #eef3ff">&#x1F4B0;</div>
-        <div class="stat-val">KES 4300</div>
-        <div class="stat-lbl">Total revenue</div>
-        <div class="stat-trend"><i class="bi bi-arrow-up"></i> 12% this month</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #dcfce7">&#x1F39F;&#xFE0F;</div>
-        <div class="stat-val">128</div>
-        <div class="stat-lbl">Tickets sold</div>
-        <div class="stat-trend"><i class="bi bi-arrow-up"></i> 8 this week</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #f0fdf4">
-     &#x2705;
+
+      <div class="row g-3">
+        <div class="col-12 col-lg-8">
+          <div class="section-card h-100">
+            <div class="section-head">
+              <div class="section-head-title">Recent orders</div>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:5px 12px;font-size:12px;border-radius:6px" (click)="goTo('orders')">View all</button>
+            </div>
+            <div style="padding:24px;text-align:center;color:#94a3b8;font-size:13px">No orders yet</div>
+          </div>
         </div>
-        <div class="stat-val">47</div>
-        <div class="stat-lbl">Paid orders</div>
-        <div class="stat-trend" style="color: #94a3b8">3 pending</div>
-      </div>
-      <div class="card stat-card">
-        <div class="stat-icon" style="background-color: #fef9c3">&#x1F4C5;</div>
-        <div class="stat-val">3</div>
-        <div class="stat-lbl">Active events</div>
-        <div class="stat-trend" style="color: #94a3b8">1 inactive</div>
-      </div>
-    </div>
-<div class="row g-3"> 
-  
-  <!-- Column 1: Main content area-->
-  <div class="col-12  col-lg-8">
-      <div class="section-card h-100">
-    <div class="section-head">
-      <div class="section-head-title">Recent order</div>
-      <button
-        type="button"
-        class="btn btn-outline btn-sm"
-        style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
-        (click)="goTo('orders')"
-      >
-        View all
-      </button>
-    </div>
-    </div>
-  </div>
-
-  <!-- Column 2 -->
-  <div class="col-12 col-lg-4">
-    <div class="section-card h-100">
-    <div class="section-head">
-      <div class="section-head-title">Your events</div>
-      <button
-        type="button"
-        class="btn btn-outline btn-sm"
-        style="padding: 5px 12px; font-size: 12px; border-radius: 6px"
-        (click)="goTo('events')"
-      >
-        Manage<i class="pi pi-arrow-right"></i>
-      </button>
-    </div>
-            <!-- Event list -->
-    <div class="event-list">
-        @if (events.length) {
-       @for (event of events; track event.id) {
-        <div class="event-item">
-
-          <!-- Event details -->
-          <div class="event-details">
-            <div class="event-name">{{ event.name }}</div>
-
-            <div class="event-date text-secondary">
-              {{ event.event_date | date: 'mediumDate'  }}
+        <div class="col-12 col-lg-4">
+          <div class="section-card h-100">
+            <div class="section-head">
+              <div class="section-head-title">Your events</div>
+              <button type="button" class="btn btn-outline btn-sm" style="padding:5px 12px;font-size:12px;border-radius:6px" (click)="goTo('events')">
+                Manage<i class="pi pi-arrow-right ps-1"></i>
+              </button>
+            </div>
+            <div class="event-list">
+              @if (events.length) {
+                @for (event of events; track event.id) {
+                  <div class="event-item">
+                    <div class="event-details">
+                      <div class="event-name">{{ event.name }}</div>
+                      <div class="event-date text-secondary">{{ event.event_date | date: 'mediumDate' }}</div>
+                    </div>
+                    <span class="tag-green" [class.tag-inactive]="!event.active">
+                      {{ event.active ? 'Active' : 'Inactive' }}
+                    </span>
+                  </div>
+                }
+              } @else {
+                <div class="empty-state">
+                  <i class="pi pi-calendar"></i>
+                  <p>No events available.</p>
+                </div>
+              }
             </div>
           </div>
-
-          <!-- Event status -->
-          <span
-            class="tag-green"
-            [class.tag-inactive]="!event.active"
-          >
-            {{ event.active ? 'Active' : 'Inactive' }}
-          </span>
-
         </div>
-      }
-    }@else {
-        <div  class="empty-state">
-      <i class="pi pi-calendar"></i>
-      <p>No events available.</p>
       </div>
     }
-    </div>
-</div>
-</div> 
 
-    </div>
- 
+    <!-- ── EVENTS VIEW ── -->
+    @if (activeEvents) {
+      <div class="page-header">
+        <div>
+          <div class="page-title">Events</div>
+          <div style="font-size:12px;color:#64748b;margin-top:2px">
+            {{ events.length }} total &mdash; {{ activeEventsCount }} active
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" (click)="openCreateModal()">
+          <i class="pi pi-plus"></i> New Event
+        </button>
+      </div>
 
-<!-- ================= PrimeNG Create Event Dialog ================= -->
-<p-dialog
-  [(visible)]="isCreateModalOpen"
-  [modal]="true"
-  [draggable]="false"
-  [resizable]="false"
-  [dismissableMask]="true"
-  styleClass="create-event-dialog"
-  [style]="{ width: '95vw', maxWidth: '672px' }"
-  header="Create New Event"
->
-  <!-- Form Body -->
+      <!-- Events table -->
+      <div class="section-card">
+        @if (loading) {
+          <div style="padding:40px;text-align:center;color:#94a3b8">
+            <i class="pi pi-spin pi-spinner" style="font-size:20px"></i>
+          </div>
+        } @else if (!events.length) {
+          <div class="empty-state" style="padding:48px">
+            <i class="pi pi-calendar" style="font-size:28px"></i>
+            <p>No events yet. Create your first event.</p>
+          </div>
+        } @else {
+          <div style="overflow-x:auto">
+            <table class="events-table">
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Date &amp; Time</th>
+                  <th>Location</th>
+                  <th>Ticket Types</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (event of events; track event.id) {
+                  <tr>
+                    <!-- Event name + Facebook link -->
+                    <td>
+                      <div class="event-table-name">{{ event.name }}</div>
+                      @if (event.facebook_url) {
+                        <a [href]="event.facebook_url" target="_blank" class="event-table-fb">
+                          <i class="bi bi-facebook"></i> facebook.com/events
+                        </a>
+                      } @else {
+                        <span style="font-size:11px;color:#cbd5e1">No Facebook URL</span>
+                      }
+                    </td>
+
+                    <!-- Date -->
+                    <td>
+                      <div style="font-size:13px">{{ event.event_date | date: 'EEE, MMM d, y' }}</div>
+                      <div style="font-size:12px;color:#64748b">{{ event.event_date | date: 'h:mm a' }}</div>
+                    </td>
+
+                    <!-- Location -->
+                    <td>
+                      <div style="font-size:13px;font-weight:500">{{ event.venue }}</div>
+                      <div style="font-size:12px;color:#64748b">{{ event.city }}, {{ event.state }}</div>
+                    </td>
+
+                    <!-- Ticket types -->
+                    <td>
+                      @for (ticket of event.ticket_types; track $index) {
+                        <div style="font-size:12px;white-space:nowrap">
+                          {{ ticket.name }} — <strong>KES {{ ticket.price | number }}</strong>
+                          <span style="color:#94a3b8"> ({{ ticket.available | number }})</span>
+                        </div>
+                      }
+                    </td>
+
+                    <!-- Status badge -->
+                    <td>
+                      <span class="tag-green" [class.tag-inactive]="!event.active">
+                        {{ event.active ? 'Active' : 'Inactive' }}
+                      </span>
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+                      <div style="display:flex;gap:6px;align-items:center">
+                        <!-- Edit -->
+                        <button class="action-btn action-edit" (click)="openEditModal(event)" title="Edit event">
+                          <i class="pi pi-pencil" style="font-size:12px"></i> Edit
+                        </button>
+                        <!-- Toggle active / deactivate -->
+                        @if (event.active) {
+                          <button class="action-btn action-deactivate" (click)="toggleActive(event)" title="Deactivate">
+                            <i class="pi pi-eye-slash" style="font-size:12px"></i>
+                          </button>
+                        } @else {
+                          <button class="action-btn action-activate" (click)="toggleActive(event)" title="Activate">
+                            Activate
+                          </button>
+                        }
+                        <!-- Delete -->
+                        <button class="action-btn action-delete" (click)="confirmDelete(event.id)" title="Delete event">
+                          <i class="pi pi-trash" style="font-size:12px"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <div style="padding:12px 16px;font-size:12px;color:#94a3b8;border-top:.5px solid #e2e8f0">
+            {{ events.length }} event{{ events.length !== 1 ? 's' : '' }} &mdash; Showing all
+          </div>
+        }
+      </div>
+    }
+
+  </div><!-- /main -->
+</div><!-- /admin-layout -->
+
+<!-- ===== SHARED EVENT FORM TEMPLATE ===== -->
+<ng-template #eventFormBody>
   <div class="event-form-body">
-    <!-- Event Name -->
     <div class="form-field-group">
       <label class="field-label">Event name *</label>
-      <input
-        type="text"
-        class="field-input"
-        placeholder="e.g. Summer Rooftop Party"
-        [(ngModel)]="newEvent.name"
-      />
+      <input type="text" class="field-input" placeholder="e.g. Summer Rooftop Party" [(ngModel)]="eventForm.name" />
     </div>
 
-    <!-- Description -->
     <div class="form-field-group">
       <label class="field-label">Description</label>
-      <textarea
-        class="field-textarea"
-        rows="4"
-        placeholder="Describe your event..."
-        [(ngModel)]="newEvent.description"
-      ></textarea>
+      <textarea class="field-textarea" rows="4" placeholder="Describe your event..." [(ngModel)]="eventForm.description"></textarea>
     </div>
 
-    <!-- Date & Venue (Row) -->
     <div class="field-grid-row">
       <div class="form-field-group">
         <label class="field-label">Date & Time *</label>
-        <input
-          type="datetime-local"
-          class="field-input"
-          [(ngModel)]="newEvent.event_date"
-        />
+        <input type="datetime-local" class="field-input" [(ngModel)]="eventForm.event_date" />
       </div>
       <div class="form-field-group">
         <label class="field-label">Venue</label>
-        <input
-          type="text"
-          class="field-input"
-          placeholder="e.g. Skyline Lounge"
-          [(ngModel)]="newEvent.venue"
-        />
+        <input type="text" class="field-input" placeholder="e.g. Skyline Lounge" [(ngModel)]="eventForm.venue" />
       </div>
     </div>
 
-    <!-- City & State (Row) -->
     <div class="field-grid-row">
       <div class="form-field-group">
         <label class="field-label">City</label>
-        <input
-          type="text"
-          class="field-input"
-          placeholder="e.g. Nairobi"
-          [(ngModel)]="newEvent.city"
-        />
+        <input type="text" class="field-input" placeholder="e.g. Nairobi" [(ngModel)]="eventForm.city" />
       </div>
       <div class="form-field-group">
         <label class="field-label">Country</label>
-        <input
-          type="text"
-          class="field-input"
-          placeholder="e.g. USA"
-          [(ngModel)]="newEvent.state"
-        />
+        <input type="text" class="field-input" placeholder="e.g. Kenya" [(ngModel)]="eventForm.state" />
       </div>
     </div>
 
-    <!-- Facebook Event URL -->
     <div class="form-field-group">
       <label class="field-label">Facebook Event URL</label>
-      <input
-        type="url"
-        class="field-input"
-        placeholder="https://facebook.com/events/..."
-        [(ngModel)]="newEvent.facebook_url"
-      />
+      <input type="url" class="field-input" placeholder="https://facebook.com/events/..." [(ngModel)]="eventForm.facebook_url" />
     </div>
 
-    <!-- Cover Image / Poster Upload -->
+    <!-- Poster upload -->
     <div class="form-field-group">
       <label class="field-label">Event Poster</label>
+      <input #posterInput type="file" accept="image/*" style="display:none" (change)="onPosterSelected($event)" />
 
-      <!-- Hidden file input -->
-      <input
-        #posterInput
-        type="file"
-        accept="image/*"
-        style="display: none"
-        (change)="onPosterSelected($event)"
-      />
-
-      <!-- Preview shown after file is selected -->
-      <div *ngIf="posterPreview; else uploadPrompt">
-        <div style="position: relative; display: inline-block; width: 100%">
-          <img
-            [src]="posterPreview"
-            alt="Event poster preview"
-            style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #e2e8f0"
-          />
-          <!-- Uploading overlay -->
-          <div
-            *ngIf="isUploading"
-            style="
-              position: absolute; inset: 0;
-              background: rgba(255,255,255,0.7);
-              border-radius: 8px;
-              display: flex; align-items: center; justify-content: center;
-              font-size: 13px; color: #475569; gap: 8px;
-            "
-          >
-            <i class="pi pi-spin pi-spinner"></i> Uploading...
-          </div>
-          <!-- Remove button -->
-          <button
-            *ngIf="!isUploading"
-            type="button"
-            (click)="removePoster()"
-            style="
-              position: absolute; top: 8px; right: 8px;
-              background: rgba(0,0,0,0.55); border: none;
-              color: #fff; border-radius: 6px;
-              width: 28px; height: 28px;
-              display: flex; align-items: center; justify-content: center;
-              cursor: pointer; font-size: 13px;
-            "
-            title="Remove poster"
-          >
-            <i class="pi pi-times"></i>
-          </button>
+      @if (posterPreview) {
+        <div style="position:relative;display:inline-block;width:100%">
+          <img [src]="posterPreview" alt="Poster preview" style="width:100%;max-height:200px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0" />
+          @if (isUploading) {
+            <div style="position:absolute;inset:0;background:rgba(255,255,255,0.75);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#475569;gap:8px">
+              <i class="pi pi-spin pi-spinner"></i> Uploading...
+            </div>
+          } @else {
+            <button type="button" (click)="removePoster()" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.55);border:none;color:#fff;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+              <i class="pi pi-times" style="font-size:12px"></i>
+            </button>
+          }
         </div>
-      </div>
-
-      <!-- Upload prompt shown when no file selected -->
-      <ng-template #uploadPrompt>
-        <div
-          (click)="posterInput.click()"
-          style="
-            border: 1.5px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 28px 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: border-color 0.15s, background 0.15s;
-          "
-          onmouseenter="this.style.borderColor='#2563eb'; this.style.background='#f0f7ff'"
-          onmouseleave="this.style.borderColor='#cbd5e1'; this.style.background=''"
-        >
-          <i class="pi pi-image" style="font-size: 24px; color: #94a3b8; display: block; margin-bottom: 8px"></i>
-          <div style="font-size: 13px; font-weight: 500; color: #475569">Click to upload poster</div>
-          <div style="font-size: 12px; color: #94a3b8; margin-top: 4px">PNG, JPG, WEBP up to 5MB</div>
+      } @else {
+        <div (click)="posterInput.click()" style="border:1.5px dashed #cbd5e1;border-radius:8px;padding:28px 16px;text-align:center;cursor:pointer"
+          onmouseenter="this.style.borderColor='#2563eb';this.style.background='#f0f7ff'"
+          onmouseleave="this.style.borderColor='#cbd5e1';this.style.background=''">
+          <i class="pi pi-image" style="font-size:24px;color:#94a3b8;display:block;margin-bottom:8px"></i>
+          <div style="font-size:13px;font-weight:500;color:#475569">Click to upload poster</div>
+          <div style="font-size:12px;color:#94a3b8;margin-top:4px">PNG, JPG, WEBP up to 5MB</div>
         </div>
-      </ng-template>
+      }
     </div>
 
-    <!-- Ticket Types Section -->
+    <!-- Ticket types -->
     <div class="tickets-section">
       <div class="tickets-header-row">
         <label class="field-label mb-0">Ticket Types *</label>
-        <button type="button" class="btn-add-ticket" (click)="addTicketTier()">
-          + Add Type
-        </button>
+        <button type="button" class="btn-add-ticket" (click)="addTicketTier()">+ Add Type</button>
       </div>
-      <p class="tickets-instruction">
-        Add one or more ticket tiers with name, price in KES, and available quantity
-      </p>
+      <p class="tickets-instruction">Add one or more ticket tiers with name, price in KES, and available quantity</p>
 
-      <!-- Ticket Tier List -->
-      @for (tier of newEvent.ticket_types; track $index) {
+      @for (tier of eventForm.ticket_types; track $index) {
         <div class="ticket-card-box">
           <div class="tier-field tier-name">
             <label class="tier-label">Name</label>
-            <input
-              type="text"
-              class="field-input"
-              placeholder="General Admission"
-              [(ngModel)]="tier.name"
-            />
+            <input type="text" class="field-input" placeholder="General Admission" [(ngModel)]="tier.name" />
           </div>
-
           <div class="tier-field tier-price">
-            <label class="tier-label">Price ($)</label>
-            <input
-              type="number"
-              class="field-input"
-              placeholder="2500"
-              [(ngModel)]="tier.price"
-            />
+            <label class="tier-label">Price (KES)</label>
+            <input type="number" class="field-input" placeholder="2500" [(ngModel)]="tier.price" />
           </div>
-
           <div class="tier-field tier-available">
             <label class="tier-label">Available</label>
-            <input
-              type="number"
-              class="field-input"
-              placeholder="200"
-              [(ngModel)]="tier.available"
-            />
+            <input type="number" class="field-input" placeholder="200" [(ngModel)]="tier.available" />
           </div>
-           <div class="tier-field tier-available">
+          <div class="tier-field tier-available">
             <label class="tier-label">Description</label>
-            <input
-              type="text"
-              class="field-input"
-              placeholder="bikes day"
-              [(ngModel)]="tier.description"
-            />
+            <input type="text" class="field-input" placeholder="e.g. Standing zone" [(ngModel)]="tier.description" />
           </div>
-
           <div class="tier-action">
-            <button
-              type="button"
-              class="btn-delete-tier"
-              (click)="removeTicketTier($index)"
-              [disabled]="newEvent.ticket_types.length === 1"
-              title="Delete ticket tier"
-            >
-              <i class="pi pi-trash" style="font-size: 13px;"></i>
+            <button type="button" class="btn-delete-tier" (click)="removeTicketTier($index)" [disabled]="eventForm.ticket_types.length === 1">
+              <i class="pi pi-trash" style="font-size:13px"></i>
             </button>
           </div>
         </div>
       }
     </div>
   </div>
+</ng-template>
 
-  <!-- PrimeNG Dialog Footer -->
+<!-- ===== CREATE MODAL ===== -->
+<p-dialog
+  [(visible)]="isCreateModalOpen"
+  [modal]="true" [draggable]="false" [resizable]="false" [dismissableMask]="true"
+  styleClass="create-event-dialog"
+  [style]="{ width: '95vw', maxWidth: '672px' }"
+  header="Create New Event"
+>
+  <ng-container *ngTemplateOutlet="eventFormBody"></ng-container>
+
   <ng-template #footer>
     <div class="dialog-actions-footer">
-      <button type="button" class="btn-dialog-cancel" (click)="closeCreateModal()">
-        Cancel
-      </button>
-      <button type="button" class="btn-dialog-create" (click)="saveEvent()">
-        Create Event
+      <button type="button" class="btn-dialog-cancel" (click)="closeCreateModal()">Cancel</button>
+      <button type="button" class="btn-dialog-create" (click)="saveEvent()" [disabled]="isSaving || isUploading">
+        <i *ngIf="isSaving" class="pi pi-spin pi-spinner" style="font-size:13px"></i>
+        {{ isSaving ? 'Creating...' : 'Create Event' }}
       </button>
     </div>
   </ng-template>
 </p-dialog>
- @if (showExpiredMessage) {
-      <div class="alert alert-warning">
-        Your 1-hour admin session has expired. Please log in again using your credentials and OTP.
-      </div>
-    }
+
+<!-- ===== EDIT MODAL ===== -->
+<p-dialog
+  [(visible)]="isEditModalOpen"
+  [modal]="true" [draggable]="false" [resizable]="false" [dismissableMask]="true"
+  styleClass="create-event-dialog"
+  [style]="{ width: '95vw', maxWidth: '672px' }"
+  header="Edit Event"
+>
+  <ng-container *ngTemplateOutlet="eventFormBody"></ng-container>
+
+  <ng-template #footer>
+    <div class="dialog-actions-footer">
+      <button type="button" class="btn-dialog-cancel" (click)="closeEditModal()">Cancel</button>
+      <button type="button" class="btn-dialog-create" (click)="updateEvent()" [disabled]="isSaving || isUploading">
+        <i *ngIf="isSaving" class="pi pi-spin pi-spinner" style="font-size:13px"></i>
+        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- ===== DELETE CONFIRM MODAL ===== -->
+<p-dialog
+  [(visible)]="isDeleteConfirmOpen"
+  [modal]="true" [draggable]="false" [resizable]="false"
+  [style]="{ width: '400px' }"
+  header="Delete Event"
+>
+  <div style="padding:8px 0;font-size:14px;color:#334155">
+    Are you sure you want to delete this event? This action cannot be undone.
+  </div>
+  <ng-template #footer>
+    <div class="dialog-actions-footer">
+      <button type="button" class="btn-dialog-cancel" (click)="cancelDelete()">Cancel</button>
+      <button type="button" style="background:#ef4444;border:none;color:#fff;border-radius:8px;padding:8px 20px;font-size:14px;font-weight:500;cursor:pointer" (click)="deleteEvent()">
+        Delete
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+@if (showExpiredMessage) {
+  <div class="alert alert-warning">
+    Your session has expired. Please log in again using your credentials and OTP.
+  </div>
+}
