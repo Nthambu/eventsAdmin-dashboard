@@ -9,9 +9,10 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) 
   const token = authService.getToken();
   const router = inject(Router);
 
-  // Skip auth routes — never attach token or trigger logout for these
+  // Skip auth routes and Cloudinary — never attach token to these
   const isAuthRoute = req.url.includes('/user/login') || req.url.includes('/user/verify');
-  if (isAuthRoute) {
+  const isCloudinary = req.url.includes('cloudinary.com');
+  if (isAuthRoute || isCloudinary) {
     return next(req);
   }
 

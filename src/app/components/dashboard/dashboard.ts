@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { EventsService } from '../../services/events-service';
 import { EventDto } from '../../data/eventsDTO.dto';
 import { DialogModule } from 'primeng/dialog';
-import { FormsModule,  ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
-import {CommonModule, DatePipe} from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
+import { CloudinaryUploadService } from '../../services/cloudinary-upload.service';
 
 interface TicketTier {
   name: string;
@@ -22,35 +23,43 @@ interface TicketTier {
 })
 
 export class Dashboard implements OnInit {
+  @ViewChild('posterInput') posterInput!: ElementRef<HTMLInputElement>;
+
   activateDashboard: boolean = true;
   activeEvents: boolean = false;
   activateOrders: boolean = false;
-  activateLogout:boolean=false;
+  activateLogout: boolean = false;
   isMobileMenuOpen: boolean = false;
-cars:[string,number,boolean]=['bmw',3,true];
-readonly school={cars:"bmw",id:3};
-newO=[{name:'',id:3},{name:'',id:3}];
-events:EventDto[]=[]
- newEvent = {
+  events: EventDto[] = [];
+
+  newEvent = {
     name: '',
     description: '',
     event_date: '',
     venue: '',
     city: '',
-state:'',
-    status: 'active',
-     facebook_url: '',
-     image_url: '',
+    state: '',
+    facebook_url: '',
+    image_url: '',
     ticket_types: [
-      { name: 'General Admission', price: 2500, available: 200,description:'Gen z connect' }
+      { name: 'General Admission', price: 2500, available: 200, description: '' }
     ] as TicketTier[]
   };
 
-loading:boolean=true;
- // Dialog visibility state
+  // Poster upload state
+  posterPreview: string | null = null;
+  isUploading: boolean = false;
+
+  loading: boolean = true;
   isCreateModalOpen = false;
   showExpiredMessage = false;
-  constructor(private readonly eventsService:EventsService,private readonly toastService:ToastrService,private route:ActivatedRoute) {}
+
+  constructor(
+    private readonly eventsService: EventsService,
+    private readonly toastService: ToastrService,
+    private readonly uploadService: CloudinaryUploadService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
      this.route.queryParams.subscribe(params => {
@@ -116,8 +125,59 @@ this.loading=false;
    openCreateModal() {
     this.isCreateModalOpen = true;
   }
-   closeCreateModal() {
+  closeCreateModal() {
     this.isCreateModalOpen = false;
+    this.posterPreview = null;
+    this.newEvent.image_url = '';
+    if (this.posterInput?.nativeElement) {
+      this.posterInput.nativeElement.value = '';
+    }
+  }
+
+  onPosterSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    // Validate — images only, max 5MB
+    if (!file.type.startsWith('image/')) {
+      this.toastService.error('Please select an image file');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      this.toastService.error('Image must be smaller than 5MB');
+      return;
+    }
+
+    // Show local preview immediately
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.posterPreview = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+
+    // Upload to Cloudinary
+    this.isUploading = true;
+    this.uploadService.uploadImage(file).subscribe({
+      next: (url) => {
+        this.newEvent.image_url = url;
+        this.isUploading = false;
+        this.toastService.success('Poster uploaded successfully');
+      },
+      error: () => {
+        this.isUploading = false;
+        this.posterPreview = null;
+        this.toastService.error('Upload failed, please try again');
+      }
+    });
+  }
+
+  removePoster(): void {
+    this.posterPreview = null;
+    this.newEvent.image_url = '';
+    if (this.posterInput?.nativeElement) {
+      this.posterInput.nativeElement.value = '';
+    }
   }
 
   // Ticket Tiers management
@@ -139,13 +199,14 @@ this.loading=false;
   saveEvent() {
     this.eventsService.createEvent(this.newEvent).subscribe({
       next:(res)=>{
-console.log('response',res);
+this.closeCreateModal();
 this.fetchEvents();
+  
       },
       error:(err)=>{
-        console.log('errors',err.error?.message);
+        this.toastService.success('',err.error?.message);
       }
     });
-    this.closeCreateModal();
+  
   }
 }
