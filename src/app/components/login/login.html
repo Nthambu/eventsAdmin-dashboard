@@ -6,7 +6,7 @@
     style="
       background-color: #ffffff;
       width: 360px;
-      height: 353px;
+      height: auto;
       border-radius: 16px;
       border: 1px solid #e2e8f0;
       box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
@@ -34,7 +34,7 @@
         />
       </div>
       <!-- @if(!isOtpRequired){ -->
-      <div *ngIf="!isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+      <div *ngIf="!isOtpRequired && !forgotPassword" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
         <label for="password" class="form-label" style="font-size: 12px; color: #64748b"
           >Password</label
         >
@@ -46,9 +46,40 @@
           id="password"
         />
       </div>
+      <!-- only shown when updating a new password -->
+         <div *ngIf="forgotPassword && !isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="newPassword" class="form-label" style="font-size: 12px; color: #64748b"
+          >New Password</label
+        >
+        <input
+          type="password"
+          formControlName="newPassword"
+          class="form-control"
+          placeholder="create a new password"
+          id="newPassword"
+        />
+      </div>
+      <!-- only shown when updating a new password -->
+         <div *ngIf="forgotPassword && !isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="confirmPassword" class="form-label" style="font-size: 12px; color: #64748b"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="form-control"
+          placeholder="confirm your new password"
+          id="confirmPassword"
+        />
+      </div>
+      <div class="form-group" style="margin-bottom: 16px; padding: 0 10px; text-align: right;position: relative;top: -10px">
+        <button type="button" class="btn btn-link" style="font-size: 12px; color: #1a56db" (click)="onForgotPassword()">
+          Forgot password?
+        </button>
+      </div>
     <!-- } -->
       <!-- @if(isOtpRequired){ -->
-  <div *ngIf="isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+  <div *ngIf="isOtpRequired || forgotPassword" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
         <label for="otp" class="form-label" style="font-size: 12px; color: #64748b"
           >Otp Code</label
         >
@@ -61,6 +92,7 @@
         />
       </div>
     <!-- } -->
+      <div class="form-group" style="margin-bottom: 16px; padding: 0 10px">
       <button
         type="button"
         class="btn btn-primary justify-content-center align-items-center"
@@ -75,11 +107,142 @@
           transition: all 0.15s;
           gap: 6px;
           display: inline-flex;
+          position: relative;
         "
         (click)="onLogin()"
       >
         Submit<i class="bi bi-arrow-right pt-1"></i>
       </button>
+      </div>
+    </form>
+     <app-react-footer>
+  </app-react-footer>
+  </div>
+</div>
+<!-- forgot password section -->
+ <!-- @if (forgotPassword) {
+ <div
+  class="login-screen d-flex align-items-center justify-content-center"
+  style="background: #f8fafc"
+>
+  <div
+    style="
+      background-color: #ffffff;
+      width: 360px;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      padding: 32px;
+    "
+  >
+    <div style="text-align: center">
+      <img alt="lock" src="/lock.png" style="width: 60px; height: 60px; object-fit: contain" />
+    </div>
+    <div style="margin-bottom: 24px; text-align: center">
+      <div class="" style="font-size: 17px; font-weight: 500; margin-bottom: 4px">Admin login</div>
+      <div style="font-family: 13px; color: #64748b">EventHub dashboard</div>
+    </div>
+    <form [formGroup]="forgotPasswordForm ">
+      <div class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="email" class="form-label" style="font-size: 12px; color: #64748b"
+          >Email</label
+        >
+        <input
+          type="text"
+          formControlName="email"
+          class="form-control"
+          placeholder="Enter your admin email"
+          id="email"
+        />
+         @if (forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.touched) || forgotPasswordForm.get('email')?.dirty) {
+       @if(forgotPasswordForm.get('email')?.errors?.['required']) {
+         <div class="text-danger">Email is required</div>
+       }
+<div class="text-danger"></div>
+       } 
+      
+    
+   
+      <div  class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="password" class="form-label" style="font-size: 12px; color: #64748b"
+          >Password</label
+        >
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          placeholder="Enter your admin password"
+          id="password"
+        />
+      </div>
+
+         <div *ngIf="isEmailRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="newPassword" class="form-label" style="font-size: 12px; color: #64748b"
+          >New Password</label
+        >
+        <input
+          type="password"
+          formControlName="newPassword"
+          class="form-control"
+          placeholder="create a new password"
+          id="newPassword"
+        />
+       
+      </div>
+ 
+         <div *ngIf="forgotPassword && !isOtpRequired" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="confirmPassword" class="form-label" style="font-size: 12px; color: #64748b"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          class="form-control"
+          placeholder="confirm your new password"
+          id="confirmPassword"
+        />
+      </div>
+      <div class="form-group" style="margin-bottom: 16px; padding: 0 10px; text-align: right;position: relative;top: -10px">
+        <button type="button" class="btn btn-link" style="font-size: 12px; color: #1a56db" (click)="onForgotPassword()">
+          Forgot password?
+        </button>
+      </div>
+  <div *ngIf="isOtpRequired || forgotPassword" class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+        <label for="otp" class="form-label" style="font-size: 12px; color: #64748b"
+          >Otp Code</label
+        >
+        <input
+          type="text"
+          formControlName="otp"
+          class="form-control"
+          placeholder="One time password"
+          id="otp"
+        />
+      </div>
+ 
+      <div class="form-group" style="margin-bottom: 16px; padding: 0 10px">
+      <button
+        type="button"
+        class="btn btn-primary justify-content-center align-items-center"
+        style="
+          background: #1a56db;
+          padding: 10px;
+          width: 100%;
+          height: 32px;
+          font-size: 13px;
+          font-weight: 500;
+          align-items: center;
+          transition: all 0.15s;
+          gap: 6px;
+          display: inline-flex;
+          position: relative;
+        "
+        (click)="onLogin()"
+      >
+        Request otp<i class="bi bi-arrow-right pt-1"></i>
+      </button>
+      </div>
     </form>
     <div
       class=""
@@ -96,3 +259,4 @@
     </div>
   </div>
 </div>
+ } -->

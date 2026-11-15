@@ -4,16 +4,20 @@ import { ToastrService } from 'ngx-toastr';
 import { Auth } from '../../services/auth';
 import { Router } from '@angular/router';
 import { CommonModule,NgIf } from '@angular/common';
+import { ReactFooterWrapperComponent } from '../../shared/react-div/react-div-wrapper.component';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule,CommonModule,NgIf],
+  imports: [ReactiveFormsModule, CommonModule, NgIf, ReactFooterWrapperComponent],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login implements OnInit {
   signInForm!: FormGroup;
   isOtpRequired:boolean=false;
+  forgotPassword:boolean=false;
+  forgotPasswordForm!: FormGroup;
+  isEmailRequired:boolean=false;
   constructor(private readonly fb: FormBuilder,private readonly toastService:ToastrService,private authService:Auth,private router:Router) {}
   
   ngOnInit(): void {
@@ -24,7 +28,16 @@ export class Login implements OnInit {
     this.signInForm = this.fb.group({
       email:['',Validators.required],
       password: ['', Validators.required],
-      otp:['']
+      otp:[''],
+      newPassword:[''],
+      confirmPassword:['']
+    });
+    this.forgotPasswordForm = this.fb.group({
+      email:['',Validators.required],
+      password: ['', Validators.required],
+      otp:[''],
+      newPassword:[''],
+      confirmPassword:['']
     });
   }
   onLogin():void{
@@ -77,5 +90,8 @@ this.authService.login(payload).subscribe({
         this.isOtpRequired=true;
       }
     })
+  }
+  onForgotPassword():void{
+   this.forgotPassword=true;
   }
 }

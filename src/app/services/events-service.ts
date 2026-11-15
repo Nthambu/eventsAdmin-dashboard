@@ -8,10 +8,13 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class EventsService {
-  private readonly baseUrl = environment.baseUrl;
+   private baseUrl: string=environment.production ? 'https://madfuns-backend.onrender.com' : 'http://localhost:3000';
+
+ 
+ // private readonly baseUrl = environment.baseUrl;
 
   constructor(private readonly http: HttpClient) {}
-
+ 
   getEvents(): Observable<EventDto[]> {
     return this.http.get<EventDto[]>(`${this.baseUrl}/events`);
   }
