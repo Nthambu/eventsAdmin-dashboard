@@ -4,6 +4,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Observable } from 'rxjs';
 import { UserLoginResponse, UserLoginsDto, VerifyOtpDto, VerifyOtpResponse } from '../data/eventsDTO.dto';
 import { environment } from '../environments/environment';
+import { UpdatePasswordDto, VerifyEmailResponse } from '../data/auth.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +40,11 @@ export class Auth {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('accessToken');
     }
+  }
+  verifyEmail(payload:any):Observable<VerifyEmailResponse>{
+  return  this.http.post<VerifyEmailResponse>(`${this.baseUrl}/user/verify/email`,payload);
+  }
+  updatePassword(payload:UpdatePasswordDto):Observable<any>{
+return this.http.post<UpdatePasswordDto>(`${this.baseUrl}/user/update-password`, payload)
   }
 }

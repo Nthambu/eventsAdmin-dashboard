@@ -4,27 +4,31 @@ import {
   input,
   effect,
   viewChild,
-  OnDestroy
+  OnDestroy,
+  inject,
+  PLATFORM_ID
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { createElement } from 'react';
 import { createRoot, Root } from 'react-dom/client';
 import Footer from './react-div'
+
 @Component({
   selector: 'app-react-footer',
   standalone: true,
   template: `<div #footerContainer></div>`
 })
 export class ReactFooterWrapperComponent implements OnDestroy {
-  // Angular 20 signal-based inputs and viewChild
-  // companyName = input.required<string>();
-  // supportEmail = input<string>('support@example.com');
   footerContainer = viewChild.required<ElementRef<HTMLDivElement>>('footerContainer');
 
   private root: Root | null = null;
+  private readonly platformId = inject(PLATFORM_ID);
 
   constructor() {
-    // Automatically mounts and re-renders whenever inputs change
     effect(() => {
+      // React uses window/document — only run in the browser, never on the SSR server
+      if (!isPlatformBrowser(this.platformId)) return;
+
       const container = this.footerContainer().nativeElement;
 
       if (!this.root) {

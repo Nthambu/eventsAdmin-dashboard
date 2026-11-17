@@ -92,6 +92,6 @@ this.authService.login(payload).subscribe({
     })
   }
   onForgotPassword():void{
-   this.forgotPassword=true;
+   this.router.navigate(['/reset-password']);
   }
 }
